@@ -49,8 +49,7 @@ namespace Animi.Editor {
 
             AnimiNodeBase nodeBase = animiEditor.graphView.selection[0] as AnimiNodeBase;
             if (nodeBase != null) {
-
-                showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, this.GetType().Name);
+                showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, nodeBase.GetType().Name);
                 if (showDetail) 
                     nodeBase.OnAnimiInspectorGUINode();
 
