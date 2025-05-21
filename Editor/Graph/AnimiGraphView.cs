@@ -18,8 +18,6 @@ namespace Animi.Editor {
             Insert(0, new GridBackground());
 
             this.AddManipulator(new SelectionDragger());
-            this.AddManipulator(new ContentDragger());
-            this.AddManipulator(new RectangleSelector());
 
             var searchProvider = new AnimiSearchProvider();
             searchProvider.Initialize(this);
@@ -77,24 +75,6 @@ namespace Animi.Editor {
             }
 
             return animiData;
-        }
-
-        public void Load(AnimiData animiData) {
-            foreach (var nodeData in animiData.nodeDataObjects) {
-                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                    foreach (var type in assembly.GetTypes()) {
-                        if (type.IsClass && !type.IsAbstract && (type.IsSubclassOf(typeof(AnimiNodeBase)))) {
-                            AnimiCustomEditor attribute = (AnimiCustomEditor)type.GetCustomAttributes(typeof(AnimiCustomEditor), true).FirstOrDefault();
-                            if(attribute != null && nodeData.GetType() == attribute.GetType())
-                            {
-                                var node = Activator.CreateInstance(type) as AnimiNodeBase;
-                                node.serializedObject = new UnityEditor.SerializedObject(nodeData);
-                                this.AddElement(node);
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 

@@ -54,8 +54,7 @@ namespace Animi.Editor
             AnimiNodeBase nodeBase = animiEditor.graphView.selection[0] as AnimiNodeBase;
             if (nodeBase != null)
             {
-
-                showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, this.GetType().Name);
+                showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, nodeBase.GetType().Name);
                 if (showDetail)
                     nodeBase.OnAnimiInspectorGUINode();
 
@@ -80,6 +79,18 @@ namespace Animi.Editor
                     };
 
                     dropdown.Show(buttonRect);
+                }
+            }
+            else
+            {
+                AnimiEdgeBase edgeBase = animiEditor.graphView.selection[0] as AnimiEdgeBase;
+                if(edgeBase != null)
+                {
+                    showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, edgeBase.GetType().Name);
+                    if (showDetail)
+                        edgeBase.OnAnimiInspectorGUIEdge();
+
+                    EditorGUILayout.EndFoldoutHeaderGroup();
                 }
             }
 

@@ -1,38 +1,38 @@
 using Animi.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.UIElements;
 
-namespace Animi.Editor {
-    public abstract class AnimiNodeBase : Node {
 
-        [System.NonSerialized]
-        protected List<AnimiComponent> components = new List<AnimiComponent>();
-
+namespace Animi.Editor
+{
+    public class AnimiEdgeBase : Edge
+    {
         [System.NonSerialized]
         public SerializedObject serializedObject;
 
         [AnimiHideInspector]
         public long hashId;
 
-        protected T InitializeSerializedObject<T>()
+        protected T InitalizeSerializedObject<T>()
         {
             AnimiCustomEditor attribute = GetType().GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;
             var dataObject = Activator.CreateInstance(typeof(T));
-            serializedObject = new SerializedObject(dataObject as AnimiNodeBaseBehaviour);
+            serializedObject = new SerializedObject(dataObject as AnimiEdgeMotionBehaviour);
 
             return (T)dataObject;
         }
 
-        public virtual void OnAnimiInspectorGUINode() {
+        public virtual void OnAnimiInspectorGUIEdge()
+        {
             var iter = serializedObject.GetIterator();
             iter.NextVisible(true);
-            while (iter.NextVisible(false)) {
+            while (iter.NextVisible(false))
+            {
                 bool hideInspector = false;
 
                 var targetType = serializedObject.targetObject.GetType();
@@ -42,40 +42,16 @@ namespace Animi.Editor {
                     var attributes = fieldInfo.GetCustomAttributes(false);
                     foreach (var attr in attributes)
                     {
-                        if (attr is HideInInspector)
+                        if(attr is HideInInspector)
                         {
                             hideInspector = true;
                             continue;
                         }
                     }
                 }
-                if (!hideInspector)
+                if(!hideInspector)
                     EditorGUILayout.PropertyField(iter, true);
             }
         }
-
-        public virtual void OnAnimiInspectorGUIComponent() {
-            foreach (AnimiComponent comp in components) {
-                comp.OnAnimiInspectorGUI();
-                GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
-            }
-        }
-
-        public void AddComponent(AnimiComponent component) {
-            components.Add(component);
-        }
-
-        public void AddComponent<T>() where T : AnimiComponent, new(){
-            components.Add((AnimiComponent)new T());
-        }
-
-        public void RemoveComponent<T>() where T : AnimiComponent {
-            components.RemoveAll(s => s is T);
-        }
-
-        public virtual ScriptableObject GetNodeData() {
-            return null;
-        }
-
     }
 }

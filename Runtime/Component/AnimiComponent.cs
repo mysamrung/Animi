@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -44,6 +45,25 @@ namespace Animi.Core {
                 var iter = SerializedObject.GetIterator();
                 iter.NextVisible(true);
                 while (iter.NextVisible(false)) {
+                    bool hideInspector = false;
+
+                    var targetType = serializedObject.targetObject.GetType();
+                    var fieldInfo = targetType.GetField(iter.name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (fieldInfo != null)
+                    {
+                        var attributes = fieldInfo.GetCustomAttributes(false);
+                        foreach (var attr in attributes)
+                        {
+                            if (attr is HideInInspector)
+                            {
+                                hideInspector = true;
+                                continue;
+                            }
+                        }
+                    }
+                    if (!hideInspector)
+                        EditorGUILayout.PropertyField(iter, true);
+
                     EditorGUILayout.PropertyField(iter, true);
                 }
             }

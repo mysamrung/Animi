@@ -8,21 +8,22 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Animi.Editor {
-    [AnimiCustomEditor(typeof(AnimiMotionBehaviour))]
     public class AnimiMotionNode : AnimiNodeBase {
-        
+
+        public AnimiMotionBehaviour animiMotionBehaviour;
+
         public AnimiMotionNode() {
             this.title = "Motion Node";
 
-            var inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(AnimiMotionNode));
+            var inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(AnimiNodeBase));
             inputPort.portName = "In";
             inputContainer.Add(inputPort);
 
-            var outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(AnimiMotionNode));
+            var outputPort = Port.Create<AnimiMotionEdge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(AnimiNodeBase));
             outputPort.portName = "Out";
             outputContainer.Add(outputPort);
 
-            InitalizedSerializedObject<AnimiMotionNode>();
+            animiMotionBehaviour = InitializeSerializedObject<AnimiMotionBehaviour>();
         }
 
         public override void OnAnimiInspectorGUINode() {
