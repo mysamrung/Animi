@@ -1,17 +1,19 @@
 using Animi.Core;
-using Codice.Client.BaseCommands.BranchExplorer;
 using System;
-using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace Animi.Editor {
-    public class AnimiInspectorWindow : EditorWindow {
-        public static GUIStyle HeaderStyle {
-            get {
-                if (headerStyle == null) {
+namespace Animi.Editor
+{
+    public class AnimiInspectorWindow : EditorWindow
+    {
+        public static GUIStyle HeaderStyle
+        {
+            get
+            {
+                if (headerStyle == null)
+                {
                     headerStyle = new GUIStyle();
                     headerStyle.normal.textColor = Color.white;
                     headerStyle.fontSize = 24;
@@ -30,13 +32,15 @@ namespace Animi.Editor {
         private bool showDetail = true;
 
         [MenuItem("Animi/Animi Inspector")]
-        public static void Open() {
+        public static void Open()
+        {
             AnimiInspectorWindow animiWindow = (AnimiInspectorWindow)EditorWindow.GetWindow(typeof(AnimiInspectorWindow));
             animiWindow.Show();
         }
 
-        public void OnGUI() {
-            if(animiEditor == null)
+        public void OnGUI()
+        {
+            if (animiEditor == null)
                 animiEditor = (AnimiEditor)EditorWindow.GetWindow(typeof(AnimiEditor));
 
             if (animiEditor == null || animiEditor.graphView == null)
@@ -48,10 +52,11 @@ namespace Animi.Editor {
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
             AnimiNodeBase nodeBase = animiEditor.graphView.selection[0] as AnimiNodeBase;
-            if (nodeBase != null) {
+            if (nodeBase != null)
+            {
 
                 showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, this.GetType().Name);
-                if (showDetail) 
+                if (showDetail)
                     nodeBase.OnAnimiInspectorGUINode();
 
                 EditorGUILayout.EndFoldoutHeaderGroup();
@@ -65,9 +70,11 @@ namespace Animi.Editor {
                 buttonRect.width = 250;
                 buttonRect.height = 25;
 
-                if (GUI.Button(buttonRect, "Add Component")) {
+                if (GUI.Button(buttonRect, "Add Component"))
+                {
                     var dropdown = new AnimiComponentDropdown(new AdvancedDropdownState());
-                    dropdown.onSelectedCallBack += (Type type) => {
+                    dropdown.onSelectedCallBack += (Type type) =>
+                    {
                         AnimiComponent comp = (AnimiComponent)Activator.CreateInstance(type);
                         nodeBase.AddComponent(comp);
                     };

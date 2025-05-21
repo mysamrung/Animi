@@ -30,6 +30,7 @@ namespace Animi.Editor {
 
             var loadButton = new ToolbarButton();
             loadButton.text = "Load";
+            loadButton.clicked += Load;
             toolbar.Add(loadButton);
 
             graphView = new AnimiGraphView();
@@ -37,14 +38,45 @@ namespace Animi.Editor {
         }
 
         private void Save() {
-            AnimiData data = graphView.Save();
+            var filePath = EditorUtility.SaveFilePanel(
+                       "Save scenarioScript as asset",
+                       "",
+                       "scenarioScript",
+                       "asset"
+                   );
 
-            AssetDatabase.CreateAsset(data, "Assets/Test.asset");
-            foreach (var nodeData in data.nodeDataObjects) {
-                nodeData.name = "node_data";
-                AssetDatabase.AddObjectToAsset(nodeData, data);
+            if (filePath.Length != 0) {
+
+                filePath = filePath.Remove(0, Application.dataPath.Length);
+                filePath = "Assets" + filePath;
+
+                AnimiData data = graphView.Save();
+                AssetDatabase.CreateAsset(data, filePath);
+                foreach (var nodeData in data.nodeDataObjects) {
+                    nodeData.name = "node_data";
+                    AssetDatabase.AddObjectToAsset(nodeData, data);
+                }
+
+                AssetDatabase.SaveAssets();
             }
-            AssetDatabase.SaveAssets();
+        }
+        private void Load()
+        {
+            var filePath = EditorUtility.OpenFilePanel(
+                          "Open scenarioScript",
+                          "scenarioScript",
+                          "asset"
+                      );
+
+            if (filePath.Length != 0)
+            {
+                filePath = filePath.Remove(0, Application.dataPath.Length);
+                filePath = "Assets" + filePath;
+
+                AnimiData data = AssetDatabase.LoadAssetAtPath<AnimiData>(filePath);
+                graphView.Load(data);
+                //opendFileLabel.text = filePath;
+            }
         }
     }
 

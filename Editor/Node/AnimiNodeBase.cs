@@ -49,5 +49,8 @@ namespace Animi.Editor {
             return null;
         }
 
+        public virtual void Load()
+        {
+        }
     }
 }
