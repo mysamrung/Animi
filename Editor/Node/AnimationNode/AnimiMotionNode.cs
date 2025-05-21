@@ -22,9 +22,7 @@ namespace Animi.Editor {
             outputPort.portName = "Out";
             outputContainer.Add(outputPort);
 
-            AnimiCustomEditor attribute = GetType().GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;
-            var dataObject = Activator.CreateInstance(attribute.GetType()) as AnimiNodeBaseBehaviour;
-            serializedObject = new SerializedObject(dataObject);
+            InitalizedSerializedObject<AnimiMotionNode>();
         }
 
         public override void OnAnimiInspectorGUINode() {

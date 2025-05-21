@@ -1,6 +1,8 @@
 using Animi.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -17,6 +19,12 @@ namespace Animi.Editor {
 
         [HideInInspector]
         public long hashId;
+
+        protected void InitalizedSerializedObject<T>() {
+            AnimiCustomEditor attribute = typeof(T).GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;
+            var dataObject = Activator.CreateInstance(attribute.GetType()) as AnimiNodeBaseBehaviour;
+            serializedObject = new SerializedObject(dataObject);
+        }
 
         public virtual void OnAnimiInspectorGUINode() {
             var iter = serializedObject.GetIterator();

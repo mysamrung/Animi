@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Animi.Core {
     public abstract class AnimiComponent : ScriptableObject {
+        private static float ContentHeaderOffset = 5;
 
         protected SerializedObject SerializedObject {
             get {
@@ -13,6 +14,7 @@ namespace Animi.Core {
                 return serializedObject;
             }
         }
+
         [System.NonSerialized]
         private SerializedObject serializedObject;
 
@@ -24,13 +26,28 @@ namespace Animi.Core {
 #if UNITY_EDITOR
             showDetail = EditorGUILayout.BeginFoldoutHeaderGroup(showDetail, this.GetType().Name);
 
-            if(showDetail) { 
+            Rect headerRect = GUILayoutUtility.GetLastRect();
+            // Define the button size
+            float buttonWidth = 60f;
+            float buttonHeight = 16f;
+
+            // Position the button on the right side of the header rect
+            Rect buttonRect = new Rect(headerRect.xMax - buttonWidth - 6f, headerRect.y + 2f, buttonWidth, buttonHeight);
+
+            // Draw the button
+            if (GUI.Button(buttonRect, "Remove")) {
+            }
+
+            EditorGUILayout.Space(ContentHeaderOffset);
+
+            if (showDetail) { 
                 var iter = SerializedObject.GetIterator();
                 iter.NextVisible(true);
                 while (iter.NextVisible(false)) {
                     EditorGUILayout.PropertyField(iter, true);
                 }
             }
+
 
             EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
