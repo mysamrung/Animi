@@ -18,11 +18,36 @@ namespace Animi.Editor
         [AnimiHideInspector]
         public long hashId;
 
+        private AnimiEdgeBaseBehaviour animiEdgeBaseBehaviour;
+        public AnimiEdgeBase()
+        {
+            animiEdgeBaseBehaviour = InitalizeSerializedObject<AnimiEdgeBaseBehaviour>();
+        }
+
+        public override void OnPortChanged(bool isInput)
+        {
+            base.OnPortChanged(isInput);
+            PortRefresh();
+        }
+
+        public virtual void PortRefresh()
+        {
+            if (input != null && input.node is AnimiNodeBase inputNode)
+            {
+                animiEdgeBaseBehaviour.from = inputNode.serializedObject.targetObject as AnimiNodeBaseBehaviour;
+            }
+
+            if (output != null && output.node is AnimiNodeBase outputNode)
+            {
+                animiEdgeBaseBehaviour.to = outputNode.serializedObject.targetObject as AnimiNodeBaseBehaviour;
+            }
+        }
+
         protected T InitalizeSerializedObject<T>()
         {
             AnimiCustomEditor attribute = GetType().GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;
             var dataObject = Activator.CreateInstance(typeof(T));
-            serializedObject = new SerializedObject(dataObject as AnimiEdgeMotionBehaviour);
+            serializedObject = new SerializedObject(dataObject as AnimiEdgeBaseBehaviour);
 
             return (T)dataObject;
         }

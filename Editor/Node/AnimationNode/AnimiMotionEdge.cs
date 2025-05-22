@@ -13,13 +13,11 @@ namespace Animi.Editor
             animiEdgeMotionBehaviour = InitalizeSerializedObject<AnimiEdgeMotionBehaviour>();
         }
 
-        public override void OnPortChanged(bool isInput)
+        public override void PortRefresh()
         {
-            base.OnPortChanged(isInput);
-
             if (animiEdgeMotionBehaviour.from != null)
             {
-                animiEdgeMotionBehaviour.from.transition.Remove(animiEdgeMotionBehaviour);
+                (animiEdgeMotionBehaviour.from as AnimiMotionBehaviour).transition.Remove(animiEdgeMotionBehaviour);
             }
 
             if (input != null && input.node is AnimiMotionNode inputNode)

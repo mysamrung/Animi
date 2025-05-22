@@ -5,9 +5,6 @@ using UnityEngine;
 namespace Animi.Core {
     [System.Serializable]
     public class AnimiNodeBaseBehaviour : ScriptableObject {
-        [AnimiHideInspector]
-        public long hashId;
-
         [NonSerialized]
         internal GameObject gameObject;
 

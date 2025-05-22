@@ -11,7 +11,7 @@ namespace Animi.Core {
 
     public class AnimiData : ScriptableObject{
         public List<AnimiNodeBaseBehaviour> nodeDataObjects = new List<AnimiNodeBaseBehaviour>();
-        public List<AnimiConnectedLineData> connectedLineDatas = new List<AnimiConnectedLineData>();
+        public List<AnimiEdgeBaseBehaviour> edgeDataObjects = new List<AnimiEdgeBaseBehaviour>();
     }
 }
 

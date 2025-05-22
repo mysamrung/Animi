@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Animi.Core
 {
     [System.Serializable]
-    public class AnimiEdgeMotionBehaviour : ScriptableObject
+    public class AnimiEdgeMotionBehaviour : AnimiEdgeBaseBehaviour
     {
         public enum BlendType
         {
@@ -18,14 +18,5 @@ namespace Animi.Core
         public float exitTime;
         public bool hasExitTime;
 
-        [AnimiHideInspector]
-        public AnimiMotionBehaviour from;
-
-        [AnimiHideInspector]
-        public AnimiMotionBehaviour to;
-
-        public virtual void OnEntry() { }
-        public virtual void OnUpdate() { }
-        public virtual void OnLeave() { }
     }
 }

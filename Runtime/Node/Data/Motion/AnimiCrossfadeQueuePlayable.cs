@@ -24,10 +24,13 @@ namespace Animi.Core
 
             owner.SetInputWeight(0, 1);
 
-            graph.Connect(AnimationClipPlayable.Create(graph, transition.from.animationClip), 0, mixer, 0);
+            AnimationClip from = (transition.from as AnimiMotionBehaviour).animationClip;
+            AnimationClip to = (transition.to as AnimiMotionBehaviour).animationClip;
+
+            graph.Connect(AnimationClipPlayable.Create(graph, from), 0, mixer, 0);
             mixer.SetInputWeight(0, 1.0f);
 
-            graph.Connect(AnimationClipPlayable.Create(graph, transition.to.animationClip), 0, mixer, 1);
+            graph.Connect(AnimationClipPlayable.Create(graph, to), 0, mixer, 1);
             mixer.SetInputWeight(1, 1.0f);
 
             this.transition = transition;

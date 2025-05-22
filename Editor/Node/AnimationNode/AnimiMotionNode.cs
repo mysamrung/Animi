@@ -15,7 +15,7 @@ namespace Animi.Editor {
         public AnimiMotionNode() {
             this.title = "Motion Node";
 
-            var inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(AnimiNodeBase));
+            var inputPort = Port.Create<AnimiEdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(AnimiNodeBase));
             inputPort.portName = "In";
             inputContainer.Add(inputPort);
 

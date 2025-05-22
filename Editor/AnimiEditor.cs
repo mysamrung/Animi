@@ -37,14 +37,50 @@ namespace Animi.Editor {
         }
 
         private void Save() {
-            AnimiData data = graphView.Save();
+            SaveAtPath("Assets/Test.asset");
+        }
 
-            AssetDatabase.CreateAsset(data, "Assets/Test.asset");
-            foreach (var nodeData in data.nodeDataObjects) {
-                nodeData.name = "node_data";
-                AssetDatabase.AddObjectToAsset(nodeData, data);
+        private void SaveAtPath(string path)
+        {
+            AnimiData animiAssetData = AssetDatabase.LoadMainAssetAtPath(path) as AnimiData;
+            AnimiData graphAnimiData = graphView.Save();
+            
+            if (animiAssetData != null)
+            {
+                var allAssets = AssetDatabase.LoadAllAssetsAtPath(path);
+                foreach (var asset in allAssets)
+                {
+                    if (asset != null && asset != animiAssetData)
+                    {
+                        Object.DestroyImmediate(asset, true);
+                    }
+                }
+
+                string originalName = animiAssetData.name;
+                EditorUtility.CopySerialized(graphAnimiData, animiAssetData);
+                animiAssetData.name = originalName;
             }
+            else
+            {
+                AssetDatabase.CreateAsset(animiAssetData, path);
+                animiAssetData = graphAnimiData;
+            }
+
+            graphAnimiData.name = graphAnimiData.name;
+
+            foreach (var nodeData in graphAnimiData.nodeDataObjects)
+            {
+                nodeData.name = "node_data";
+                AssetDatabase.AddObjectToAsset(nodeData, animiAssetData);
+            }
+            foreach (var edgeData in graphAnimiData.edgeDataObjects)
+            {
+                edgeData.name = "edge_data";
+                AssetDatabase.AddObjectToAsset(edgeData, animiAssetData);
+            }
+
             AssetDatabase.SaveAssets();
+
         }
     }
 

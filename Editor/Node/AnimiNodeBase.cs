@@ -17,9 +17,6 @@ namespace Animi.Editor {
         [System.NonSerialized]
         public SerializedObject serializedObject;
 
-        [AnimiHideInspector]
-        public long hashId;
-
         protected T InitializeSerializedObject<T>()
         {
             AnimiCustomEditor attribute = GetType().GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;

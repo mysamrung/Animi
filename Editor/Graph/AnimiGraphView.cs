@@ -2,6 +2,7 @@ using Animi.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -50,30 +51,29 @@ namespace Animi.Editor {
                 if (!port.connected)
                     continue;
 
-                AnimiNodeBase curNodeBase = port.node as AnimiNodeBase;
-                if (curNodeBase != null) {
-                    AnimiConnectedLineData animiConnectedLineData = new AnimiConnectedLineData();
-                    animiConnectedLineData.fromHashId = curNodeBase.hashId;
-                    foreach (var nextNode in port.connections) {
-                        AnimiNodeBase nextNodeBase = nextNode.input.node as AnimiNodeBase;
-                        if (nextNodeBase != null)
-                            animiConnectedLineData.toHashId.Add(nextNodeBase.hashId);
-                    }
+                if (port.direction == Direction.Output)
+                    continue;
 
-                    animiData.connectedLineDatas.Add(animiConnectedLineData);
+                foreach (var connection in port.connections)
+                {
+                    if (connection is AnimiEdgeBase animiEdgeBase)
+                    {
+                        AnimiEdgeBaseBehaviour data = (AnimiEdgeBaseBehaviour)animiEdgeBase.serializedObject.targetObject;
+                        animiData.edgeDataObjects.Add(data);
+                    }
                 }
+
             }
 
             foreach(var node in nodes) {
                 AnimiNodeBase animiNode = node as AnimiNodeBase;
                 if (animiNode != null) {
-                    AnimiNodeBaseBehaviour data = GameObject.Instantiate((AnimiNodeBaseBehaviour)animiNode.serializedObject.targetObject);
-                    data.hashId = animiNode.hashId;
-
+                    AnimiNodeBaseBehaviour data = (AnimiNodeBaseBehaviour)animiNode.serializedObject.targetObject;
                     animiData.nodeDataObjects.Add(data);
                 }
             }
 
+            animiData = ScriptableObjectCloner.DeepClone(animiData);
             return animiData;
         }
     }
