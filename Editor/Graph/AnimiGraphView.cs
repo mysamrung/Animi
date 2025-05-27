@@ -44,6 +44,48 @@ namespace Animi.Editor {
             return compatiblePorts;
         }
 
+        public void Load(AnimiData data)
+        {
+            AnimiData animiData = ScriptableObjectCloner.DeepClone(data);
+            foreach(var nodeData in animiData.nodeDataObjects)
+            {
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(AnimiNodeBase)) && Attribute.IsDefined(type, typeof(AnimiCustomEditor)))
+                        {
+                            var attr = (AnimiCustomEditor)Attribute.GetCustomAttribute(type, typeof(AnimiCustomEditor));
+                            if(attr.GetType() == nodeData.GetType())
+                            {
+                                var node = Activator.CreateInstance(type, args:nodeData) as AnimiNodeBase;
+                                AddElement(node);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach(var edgeData in animiData.edgeDataObjects)
+            {
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(AnimiEdgeBase)) && Attribute.IsDefined(type, typeof(AnimiCustomEditor)))
+                        {
+                            var attr = (AnimiCustomEditor)Attribute.GetCustomAttribute(type, typeof(AnimiCustomEditor));
+                            if (attr.GetType() == edgeData.GetType())
+                            {
+                                var edge = Activator.CreateInstance(type, args: edgeData) as AnimiEdgeBase;
+                                AddElement(edge);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public AnimiData Save() {
             AnimiData animiData = new AnimiData();
 

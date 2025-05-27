@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Animi.Editor {
+
+    [AnimiCustomEditor(typeof(AnimiMotionBehaviour))]
     public class AnimiMotionNode : AnimiNodeBase {
 
         public AnimiMotionBehaviour animiMotionBehaviour;
@@ -24,6 +26,11 @@ namespace Animi.Editor {
             outputContainer.Add(outputPort);
 
             animiMotionBehaviour = InitializeSerializedObject<AnimiMotionBehaviour>();
+        }
+        public AnimiMotionNode(AnimiNodeBaseBehaviour dataObject) : this()
+        {
+            animiMotionBehaviour = dataObject as AnimiMotionBehaviour;
+            serializedObject = new SerializedObject(dataObject);
         }
 
         public override void OnAnimiInspectorGUINode() {

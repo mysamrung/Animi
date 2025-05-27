@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Animi.Editor
 {
+    [AnimiCustomEditor(typeof(AnimiEdgeMotionBehaviour))]
     public class AnimiMotionEdge : AnimiEdgeBase
     {
         public AnimiEdgeMotionBehaviour animiEdgeMotionBehaviour;

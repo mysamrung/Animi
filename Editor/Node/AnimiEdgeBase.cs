@@ -10,18 +10,23 @@ using UnityEngine.UIElements;
 
 namespace Animi.Editor
 {
+    [AnimiCustomEditor(typeof(AnimiEdgeBaseBehaviour))]
     public class AnimiEdgeBase : Edge
     {
         [System.NonSerialized]
         public SerializedObject serializedObject;
 
-        [AnimiHideInspector]
-        public long hashId;
-
         private AnimiEdgeBaseBehaviour animiEdgeBaseBehaviour;
+
         public AnimiEdgeBase()
         {
             animiEdgeBaseBehaviour = InitalizeSerializedObject<AnimiEdgeBaseBehaviour>();
+        }
+
+        public AnimiEdgeBase(AnimiEdgeBaseBehaviour dataObject)
+        {
+            serializedObject = new SerializedObject(dataObject);
+            animiEdgeBaseBehaviour = dataObject;
         }
 
         public override void OnPortChanged(bool isInput)

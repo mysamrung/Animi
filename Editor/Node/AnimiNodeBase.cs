@@ -17,6 +17,15 @@ namespace Animi.Editor {
         [System.NonSerialized]
         public SerializedObject serializedObject;
 
+        public AnimiNodeBase()
+        {
+
+        }
+
+        public AnimiNodeBase(AnimiNodeBaseBehaviour dataObject) : this()
+        {
+        }
+
         protected T InitializeSerializedObject<T>()
         {
             AnimiCustomEditor attribute = GetType().GetCustomAttributes(typeof(AnimiCustomEditor)).FirstOrDefault() as AnimiCustomEditor;
