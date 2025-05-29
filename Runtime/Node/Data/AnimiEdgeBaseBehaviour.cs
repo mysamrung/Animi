@@ -12,6 +12,14 @@ namespace Animi.Core
         [AnimiHideInspector]
         public AnimiNodeBaseBehaviour to;
 
+#if UNITY_EDITOR
+        [AnimiHideInspector]
+        public string fromPortName;
+
+        [AnimiHideInspector]
+        public string toPortName;
+#endif
+
         public virtual void OnEntry() { }
         public virtual void OnUpdate() { }
         public virtual void OnLeave() { }

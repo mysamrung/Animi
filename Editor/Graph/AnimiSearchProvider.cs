@@ -31,6 +31,10 @@ namespace Animi.Editor {
             var type = searchTreeEntry.userData as System.Type;
             var node = Activator.CreateInstance(type) as AnimiNodeBase;
             graphView.AddElement(node);
+
+            graphView.ClearSelection();
+            graphView.AddToSelection(node);
+
             return true;
         }
     }

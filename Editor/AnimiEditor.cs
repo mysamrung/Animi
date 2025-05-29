@@ -19,7 +19,7 @@ namespace Animi.Editor
 
         public void OnEnable()
         {
-            CreateGraphView();
+            CreateGraphView(); 
         }
 
         private void CreateGraphView()
@@ -35,7 +35,7 @@ namespace Animi.Editor
             var loadButton = new ToolbarButton();
             loadButton.text = "Load";
             loadButton.clicked += Load;
-            toolbar.Add(loadButton);
+            toolbar.Add(loadButton); 
 
             graphView = new AnimiGraphView();
             rootVisualElement.Add(graphView);

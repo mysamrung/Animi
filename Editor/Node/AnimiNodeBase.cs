@@ -19,11 +19,14 @@ namespace Animi.Editor {
 
         public AnimiNodeBase()
         {
-
+            InitializeData(null);
+            InitializeNode();
         }
 
-        public AnimiNodeBase(AnimiNodeBaseBehaviour dataObject) : this()
+        public AnimiNodeBase(AnimiNodeBaseBehaviour dataObject)
         {
+            InitializeData(dataObject);
+            InitializeNode();
         }
 
         protected T InitializeSerializedObject<T>()
@@ -33,6 +36,17 @@ namespace Animi.Editor {
             serializedObject = new SerializedObject(dataObject as AnimiNodeBaseBehaviour);
 
             return (T)dataObject;
+        }
+
+
+        protected virtual void InitializeNode()
+        {
+
+        }
+
+        protected virtual void InitializeData(AnimiNodeBaseBehaviour dataObject)
+        {
+
         }
 
         public virtual void OnAnimiInspectorGUINode() {

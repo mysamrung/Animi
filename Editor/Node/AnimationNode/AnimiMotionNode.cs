@@ -14,8 +14,12 @@ namespace Animi.Editor {
 
         public AnimiMotionBehaviour animiMotionBehaviour;
 
-        public AnimiMotionNode() {
-            this.title = "Motion Node";
+        public AnimiMotionNode() : base() { }
+        public AnimiMotionNode(AnimiNodeBaseBehaviour dataObject) : base(dataObject) { }
+
+        protected override void InitializeNode()
+        {
+            this.title = animiMotionBehaviour.nodeName;
 
             var inputPort = Port.Create<AnimiEdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(AnimiNodeBase));
             inputPort.portName = "In";
@@ -24,13 +28,19 @@ namespace Animi.Editor {
             var outputPort = Port.Create<AnimiMotionEdge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(AnimiNodeBase));
             outputPort.portName = "Out";
             outputContainer.Add(outputPort);
-
-            animiMotionBehaviour = InitializeSerializedObject<AnimiMotionBehaviour>();
         }
-        public AnimiMotionNode(AnimiNodeBaseBehaviour dataObject) : this()
+
+        protected override void InitializeData(AnimiNodeBaseBehaviour dataObject)
         {
-            animiMotionBehaviour = dataObject as AnimiMotionBehaviour;
-            serializedObject = new SerializedObject(dataObject);
+            if(dataObject != null)
+            {
+                animiMotionBehaviour = dataObject as AnimiMotionBehaviour;
+                serializedObject = new SerializedObject(dataObject);
+            }
+            else
+            {
+                animiMotionBehaviour = InitializeSerializedObject<AnimiMotionBehaviour>();
+            }
         }
 
         public override void OnAnimiInspectorGUINode() {

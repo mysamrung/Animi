@@ -6,7 +6,10 @@ using UnityEngine.Playables;
 namespace Animi.Core {
     [System.Serializable]
     public class AnimiMotionBehaviour : AnimiNodeBaseBehaviour {
+
+#if UNITY_EDITOR
         public string nodeName = "Motion Node";
+#endif
 
         public AnimationClip animationClip;
 
