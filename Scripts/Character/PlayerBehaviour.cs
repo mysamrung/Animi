@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     private CharacterMovementStats moveStats;
+    
+    [SerializeField]
+    private CharacterAttackStats attackStats;
 
+    [SerializeField]
+    private CharacterWeapon characterWeapon;
 
     private void Start() {
         characterController = GetComponent<CharacterController>();
