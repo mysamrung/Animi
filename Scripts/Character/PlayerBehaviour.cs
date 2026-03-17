@@ -35,7 +35,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         var playerCombatStateMachines = animator.GetBehaviours<PlayerCombatStateMachine>();
         foreach (var playerCombatStateMachine in playerCombatStateMachines) {
-            playerCombatStateMachine.Setup(combatAction, moveAction, characterController);
+            playerCombatStateMachine.Setup(combatAction, moveAction, characterController, attackStats, characterWeapon);
         }
     }
 }

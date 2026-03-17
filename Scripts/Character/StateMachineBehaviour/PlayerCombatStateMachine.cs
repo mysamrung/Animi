@@ -8,6 +8,8 @@ public class PlayerCombatStateMachine : StateMachineBehaviour {
         public Vector2 movementDuration = new Vector2(0, 1);
         public Vector2 hitDuration = new Vector2(0, 1);
         public Vector2 inputDuration = new Vector2(0, 1);
+        public float showEffectTime = 0;
+        public int effectIndex = -1;
 
         public float moveSpeed;
         public float rotateSpeed;
@@ -19,16 +21,22 @@ public class PlayerCombatStateMachine : StateMachineBehaviour {
 
     public CombatProperty combatProperty;
 
-    private CharacterAttackStats characterAttackStats;
     private CharacterController characterController;
+    private CharacterAttackStats characterAttackStats;
     private CharacterWeapon characterWeapon;
+
+    private bool isAlreadyShowEffect = false;
 
     public void Setup(InputAction combatAction, InputAction moveAction, CharacterController characterController, CharacterAttackStats characterAttackStats, CharacterWeapon characterWeapon) { 
         this.combatAction = combatAction;
         this.moveAction = moveAction;
-        this.characterAttackStats = characterAttackStats;
         this.characterController = characterController;
+        this.characterAttackStats = characterAttackStats;
         this.characterWeapon = characterWeapon;
+    }
+
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        isAlreadyShowEffect = false;
     }
 
     public override void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -57,5 +65,19 @@ public class PlayerCombatStateMachine : StateMachineBehaviour {
 
             characterController.Move(transform.forward * combatProperty.moveSpeed * Time.deltaTime);
         }
+    }
+
+    private void ShowEffect(Transform transform, AnimatorStateInfo stateInfo) {
+        if (isAlreadyShowEffect)
+            return;
+
+        if (stateInfo.normalizedTime < combatProperty.showEffectTime)
+            return;
+
+        if (combatProperty.effectIndex < 0)
+            return;
+
+
+        isAlreadyShowEffect = true;
     }
 }

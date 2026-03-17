@@ -24,6 +24,7 @@ public class CharacterWeapon {
     public class Weapon {
         public string key;
         public WeaponColliderDetector colliderDetector;
+        public List<GameObject> effectList;
     }
 
     [SerializeField]
